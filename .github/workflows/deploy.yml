@@ -1,0 +1,42 @@
+name: Deploy Expo Web to GitHub Pages 
+
+on:
+push:
+branches:
+- main # Change to 'master' if your default branch uses that name 
+
+permissions:
+contents: write 
+
+jobs:
+deploy:
+runs-on: ubuntu-latest 
+
+steps:
+
+* name: Checkout Repository
+uses: actions/checkout@v4
+* name: Setup Node.js
+uses: actions/setup-node@v4
+with:
+node-version: 20
+
+# We cache by pointing specifically to the lockfile inside the subfolder
+
+cache: 'npm'
+cache-dependency-path: live-documentation/package-lock.json
+
+* name: Install Dependencies
+working-directory: live-documentation
+run: npm ci
+* name: Build Expo Web (Export)
+working-directory: live-documentation
+run: npx expo export -p web
+* name: Fix SPA 404 Routing (Optional)
+working-directory: live-documentation
+run: cp dist/index.html dist/404.html
+* name: Deploy to GitHub Pages
+uses: JamesIves/github-pages-deploy-action@v4
+with:
+folder: live-documentation/dist # Looks inside the nested dist folder
+branch: gh-pages
