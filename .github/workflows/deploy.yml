@@ -29,6 +29,8 @@ jobs:
 
       - name: Build Expo Web (Export)
         working-directory: live-documentation
+        env:
+          EXPO_BASE_URL: /MDATE-documentation.io
         run: npx expo export -p web
 
       - name: Disable Jekyll processing
