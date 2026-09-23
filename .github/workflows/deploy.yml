@@ -41,6 +41,14 @@ jobs:
         working-directory: live-documentation
         run: cp dist/index.html dist/404.html
 
+      - name: Debug - list dist contents
+        working-directory: live-documentation
+        run: |
+          echo "=== dist root ==="
+          ls -la dist/
+          echo "=== _expo ==="
+          find dist/_expo -type f 2>/dev/null | head -50
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
